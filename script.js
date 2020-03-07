@@ -11,8 +11,8 @@ function displayProgress(chunkLength, downloaded, total) {
   console.log(
     `${((downloaded / total) * 100).toFixed(2)}% _ Remaining: ${(
       (total - downloaded) /
-      1000
-    ).toFixed(2)}mb in chunk - ${chunkLength / 1000}mb`
+      1000000
+    ).toFixed(2)}mb in chunk - ${chunkLength / 1000}kb`
   );
 }
 
