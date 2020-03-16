@@ -27,7 +27,8 @@ function download(url, filePath) {
 
     console.log(`Downloading '${url}' to '${filePath}'`);
     ytdl(url, {
-      quality: "highest"
+      // change to 'highestaudio' if necessary
+      quality: "highestvideo"
     })
       .on("error", console.error)
       .on("progress", displayProgress)
