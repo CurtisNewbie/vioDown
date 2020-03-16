@@ -130,16 +130,19 @@ function main() {
   let url = "";
   let filePath = "";
   console.log();
-  reader.question("Enter the video url that your want to download:\n", str => {
-    url = str;
-    reader.question(
-      "Enter the absolute (or relative) path and name of this downloaded file: (it will always be downloaded as mp4 file)\n",
-      path => {
-        filePath = path;
-        download(url, filePath);
-        reader.close();
-      }
-    );
-  });
+  reader.question(
+    ">>> Enter the video url that your want to download:\n",
+    str => {
+      url = str;
+      reader.question(
+        "\n>>> Enter the absolute or relative path (including file name) to the downloaded file:\n",
+        path => {
+          filePath = path;
+          download(url, filePath);
+          reader.close();
+        }
+      );
+    }
+  );
 }
 main();
