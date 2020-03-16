@@ -44,10 +44,10 @@ Main
 let url = "";
 let filePath = "";
 console.log();
-reader.question("Enter the video url that your want to download:", str => {
+reader.question("Enter the video url that your want to download:\n", str => {
   url = str;
   reader.question(
-    "Enter the absolute (or relative) path and name of this downloaded file:",
+    "Enter the absolute (or relative) path and name of this downloaded file:\n",
     path => {
       filePath = path;
       download(url, filePath);
