@@ -6,6 +6,15 @@ Download youtube videos using library <a href="https://github.com/fent/node-ytdl
 
 - NodeJS
 
+## Video or Audio Quality
+
+Change the setting of quality based on your preferences. For example, the code below prefers the highest video quality over the audio quality. More available configuration, see <a href="https://github.com/fent/node-ytdl-core">ytdl-core</a>.
+
+    ytdl(url, {
+      // change to 'highestaudio' if necessary
+      quality: "highestvideo"
+    })
+
 ## How to use it?
 
 Run the js file as follows:
