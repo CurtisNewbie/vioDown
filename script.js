@@ -18,12 +18,13 @@ function displayProgress(chunkLength, downloaded, total) {
 
 function download(url, filePath) {
   if (url) {
-    if (!filePath)
+    if (!filePath) {
       filePath =
         "video-downloaded-at-" + new Date().toTimeString().substring(0, 8);
-    console.log(
-      `Filepath is not specified, it has been changed to \"${filePath}\"`
-    );
+      console.log(
+        `Filepath is not specified, it has been changed to \"${filePath}\"`
+      );
+    }
 
     console.log(`Downloading '${url}' to '${filePath}'`);
     ytdl(url, {
