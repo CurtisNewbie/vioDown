@@ -28,7 +28,14 @@ Run the js file as follows:
 
 Then provide the url and the path to where you want it to be downloaded based on the given instructions, make sure you also include the file name in the path.
 
-    e.g., it should have absolute path as well as file name, but you do not need
-    file extension, since it will always be of mp4 format
+    e.g, in the console, it will be like this:
 
-    /home/media/abc
+    >>> Enter the video url that your want to download:
+    https://www.youtube.com/watch?v=RGOWPswqRwc
+
+    >>> Enter the absolute or relative path (including file name) to the downloaded file:
+    /home/yongjie/media/favourite-cocktail
+    Downloading Video to /home/yongjie/media/favourite-cocktail_video
+    0.00% _ Remaining: 461.58mb in chunk - 16.384kb
+    0.01% _ Remaining: 461.56mb in chunk - 16.384kb
+    0.01% _ Remaining: 461.55mb in chunk - 16.384kb
