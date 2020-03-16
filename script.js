@@ -17,7 +17,14 @@ function displayProgress(chunkLength, downloaded, total) {
 }
 
 function download(url, filePath) {
-  if (url && filePath) {
+  if (url) {
+    if (!filePath)
+      filePath =
+        "video-downloaded-at-" + new Date().toTimeString().substring(0, 8);
+    console.log(
+      `Filepath is not specified, it has been changed to \"${filePath}\"`
+    );
+
     console.log(`Downloading '${url}' to '${filePath}'`);
     ytdl(url, {
       quality: "highest"
@@ -26,11 +33,10 @@ function download(url, filePath) {
       .on("progress", displayProgress)
       .pipe(fileSys.createWriteStream(filePath))
       .on("finish", () => {
-        console.log(`Done ${filePath}`);
+        console.log(`Done! Video downloaded - '${filePath}'`);
       });
   } else {
     if (!url) console.log("URL cannot be empty");
-    if (!filePath) console.log("Path to downloaded cannot be empty");
   }
 }
 
