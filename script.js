@@ -13,14 +13,14 @@ const VIDEO_INFIX = "_video";
 
 let audioProgress = {
   name: "Audio Progress:",
-  percentage: "0%",
+  percentage: "0.00",
   remaining: "",
   chunkLength: "",
   downloaded: false
 };
 let videoProgress = {
   name: "Video Progress:",
-  percentage: "0%",
+  percentage: "0.00",
   remaining: "",
   chunkLength: "",
   dowloaded: false

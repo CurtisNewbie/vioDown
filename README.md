@@ -35,10 +35,10 @@ Then provide the url and the path to where you want it to be downloaded based on
 
     >>> Enter the absolute or relative path (including file name) to the downloaded file:
     /home/yongjie/media/favourite-cocktail
-    Audio Progress: - 0%%, Remaining: mb, ChunkLength: kb
+    Audio Progress: - 0.00%, Remaining: mb, ChunkLength: kb
     Video Progress: - 0.00%, Remaining: 461.58mb, ChunkLength: 16.384kb
 
-    Audio Progress: - 0%%, Remaining: mb, ChunkLength: kb
+    Audio Progress: - 0.00%, Remaining: mb, ChunkLength: kb
     Video Progress: - 0.01%, Remaining: 461.56mb, ChunkLength: 16.384kb
 
     Audio Progress: - 0.11%, Remaining: 14.67mb, ChunkLength: 16.384kb
