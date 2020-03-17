@@ -108,14 +108,18 @@ function mergeVideoAndAudio(filePath) {
 
 /**
  * Delete temporary files
+ *
  * @param {*} pathToVideo path to the video part
  * @param {*} pathToAudio path to the audio part
  */
 function deleteTempFiles(pathToVideo, pathToAudio) {
   console.log(`Deleting '${pathToVideo}' and '${pathToAudio}'`);
-  fileSys.unlinkSync(pathToVideo);
-  fileSys.unlinkSync(pathToAudio);
-  console.log("Finished");
+  fileSys.unlink(pathToVideo, () => {
+    console.log(`${pathToVideo} deleted.`);
+  });
+  fileSys.unlink(pathToAudio, () => {
+    console.log(`${pathToAudio} deleted.`);
+  });
 }
 
 /**
