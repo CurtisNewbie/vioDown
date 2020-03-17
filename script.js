@@ -11,15 +11,69 @@ const reader = readline.createInterface({
 const AUDIO_INFIX = "_audio";
 const VIDEO_INFIX = "_video";
 
+let audioProgress = {
+  name: "Audio Progress:",
+  percentage: "0%",
+  remaining: "",
+  chunkLength: "",
+  downloaded: false
+};
+let videoProgress = {
+  name: "Video Progress:",
+  percentage: "0%",
+  remaining: "",
+  chunkLength: "",
+  dowloaded: false
+};
+let isMerging = false;
+
 /**
- * Callback function for displaying progress
+ * Callback function for updating audio progress
  */
-function displayProgress(chunkLength, downloaded, total) {
+function updateAudioProgress(chunkLength, downloaded, total) {
+  let percentage = ((downloaded / total) * 100).toFixed(2);
+  let remaining = ((total - downloaded) / 1000000).toFixed(2);
+  audioProgress.percentage = percentage;
+  audioProgress.remaining = remaining;
+  audioProgress.chunkLength = chunkLength / 1000;
+  displayProgress();
+}
+
+/**
+ * Callback function for updating video progress
+ */
+
+function updateVideoProgress(chunkLength, downloaded, total) {
+  let percentage = ((downloaded / total) * 100).toFixed(2);
+  let remaining = ((total - downloaded) / 1000000).toFixed(2);
+  videoProgress.percentage = percentage;
+  videoProgress.remaining = remaining;
+  videoProgress.chunkLength = chunkLength / 1000;
+  displayProgress();
+}
+
+/**
+ * Display audio and video progress
+ */
+function displayProgress() {
+  display(
+    audioProgress.name,
+    audioProgress.percentage,
+    audioProgress.remaining,
+    audioProgress.chunkLength
+  );
+  display(
+    videoProgress.name,
+    videoProgress.percentage,
+    videoProgress.remaining,
+    videoProgress.chunkLength
+  );
+  console.log();
+}
+
+function display(name, percentage, remaining, chunkLength) {
   console.log(
-    `${((downloaded / total) * 100).toFixed(2)}% _ Remaining: ${(
-      (total - downloaded) /
-      1000000
-    ).toFixed(2)}mb in chunk - ${chunkLength / 1000}kb`
+    `${name} - ${percentage}%, Remaining: ${remaining}mb, ChunkLength: ${chunkLength}kb`
   );
 }
 
@@ -38,6 +92,7 @@ function download(url, filePath) {
       );
     }
     downloadVideo(url, filePath);
+    downloadAudio(url, filePath);
   } else {
     if (!url) console.log("URL cannot be empty");
   }
@@ -48,17 +103,17 @@ function download(url, filePath) {
  */
 function downloadVideo(url, filePath) {
   let videoPath = filePath + VIDEO_INFIX;
-  console.log("Downloading Video to", videoPath);
+  // console.log("Downloading Video to", videoPath);
   ytdl(url, {
     quality: "highestvideo",
     filter: "videoonly"
   })
     .on("error", console.error)
-    .on("progress", displayProgress)
+    .on("progress", updateVideoProgress)
     .pipe(fileSys.createWriteStream(videoPath))
     .on("finish", () => {
-      console.log(`Done! Video downloaded - '${videoPath}'`);
-      downloadAudio(url, filePath);
+      videoProgress.dowloaded = true;
+      if (!isMerging) mergeVideoAndAudio(filePath);
     });
 }
 
@@ -67,17 +122,17 @@ function downloadVideo(url, filePath) {
  */
 function downloadAudio(url, filePath) {
   let audioPath = filePath + AUDIO_INFIX;
-  console.log("Downloading Audio to", audioPath);
+  // console.log("Downloading Audio to", audioPath);
   ytdl(url, {
     quality: "highestaudio",
     filter: "audioonly"
   })
     .on("error", console.error)
-    .on("progress", displayProgress)
+    .on("progress", updateAudioProgress)
     .pipe(fileSys.createWriteStream(audioPath))
     .on("finish", () => {
-      mergeVideoAndAudio(filePath);
-      console.log(`Done! Audio downloaded - '${audioPath}'`);
+      audioProgress.downloaded = true;
+      if (!isMerging) mergeVideoAndAudio(filePath);
     });
 }
 
@@ -86,13 +141,18 @@ function downloadAudio(url, filePath) {
  * temporary files.
  */
 function mergeVideoAndAudio(filePath) {
+  if (!audioProgress.downloaded || !videoProgress.dowloaded) return;
+
+  isMerging = true;
   let videoPath = filePath + VIDEO_INFIX;
   let audioPath = filePath + AUDIO_INFIX;
   let audio = path.resolve(videoPath);
   let video = path.resolve(audioPath);
 
   if (!filePath.endsWith(".mp4")) filePath += ".mp4";
-  console.log(`Merging ${videoPath} and ${audioPath} to ${filePath}`);
+  console.log(
+    `Merging ${videoPath} and ${audioPath} to ${filePath}, this may take a while`
+  );
 
   ffmpeg()
     .input(video)
@@ -101,7 +161,9 @@ function mergeVideoAndAudio(filePath) {
     .save(filePath)
     .on("error", console.error)
     .on("end", () => {
-      console.log(`Done! Merged File downloaded - ${filePath}`);
+      console.log(
+        `Done! Temporary audio and video files are successfully merged - ${filePath}`
+      );
       deleteTempFiles(videoPath, audioPath);
     });
 }
