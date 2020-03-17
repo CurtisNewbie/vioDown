@@ -47,16 +47,17 @@ function download(url, filePath) {
  * Download video part, once it's finished, it calls downloadAudio() method
  */
 function downloadVideo(url, filePath) {
-  console.log("Downloading Video to", filePath + VIDEO_INFIX);
+  let videoPath = filePath + VIDEO_INFIX;
+  console.log("Downloading Video to", videoPath);
   ytdl(url, {
     quality: "highestvideo",
     filter: "videoonly"
   })
     .on("error", console.error)
     .on("progress", displayProgress)
-    .pipe(fileSys.createWriteStream(filePath + VIDEO_INFIX))
+    .pipe(fileSys.createWriteStream(videoPath))
     .on("finish", () => {
-      console.log(`Done! Video downloaded - '${filePath + VIDEO_INFIX}'`);
+      console.log(`Done! Video downloaded - '${videoPath}'`);
       downloadAudio(url, filePath);
     });
 }
@@ -65,17 +66,18 @@ function downloadVideo(url, filePath) {
  *  Download audio part, once it's finished, it calls mergeVideoAndAudio()
  */
 function downloadAudio(url, filePath) {
-  console.log("Downloading Audio to", filePath + AUDIO_INFIX);
+  let audioPath = filePath + AUDIO_INFIX;
+  console.log("Downloading Audio to", audioPath);
   ytdl(url, {
     quality: "highestaudio",
     filter: "audioonly"
   })
     .on("error", console.error)
     .on("progress", displayProgress)
-    .pipe(fileSys.createWriteStream(filePath + AUDIO_INFIX))
+    .pipe(fileSys.createWriteStream(audioPath))
     .on("finish", () => {
       mergeVideoAndAudio(filePath);
-      console.log(`Done! Audio downloaded - '${filePath + AUDIO_INFIX}'`);
+      console.log(`Done! Audio downloaded - '${audioPath}'`);
     });
 }
 
