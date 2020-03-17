@@ -2,7 +2,7 @@
 
 Download youtube videos using library <a href="https://github.com/fent/node-ytdl-core">ytdl-core</a>. This library is great with lots of examples, and it just works. Mine has very limited functionlities, so do have a look at this library and make one for yourself.
 
-This program always downloads the media of highest quality. The video and audio are downloaded seperately. The general logic is that it starts with downloading the video part, and then the audio part, and then merge them into a media file of **mp4** format using ffmpeg. The video part and audio part downloaded previously are deleted once they are merged.
+This program always chooses the highest quality option. The video and audio are downloaded seperately and in parallel. The general logic is that it starts with downloading both the video part and the audio part asynchronously, and then merge them into a media file of **mp4** format using **ffmpeg**. The video part and audio part downloaded previously are deleted once they are merged.
 
 ### Prerequisite
 
@@ -35,7 +35,16 @@ Then provide the url and the path to where you want it to be downloaded based on
 
     >>> Enter the absolute or relative path (including file name) to the downloaded file:
     /home/yongjie/media/favourite-cocktail
-    Downloading Video to /home/yongjie/media/favourite-cocktail_video
-    0.00% _ Remaining: 461.58mb in chunk - 16.384kb
-    0.01% _ Remaining: 461.56mb in chunk - 16.384kb
-    0.01% _ Remaining: 461.55mb in chunk - 16.384kb
+    Audio Progress: - 0%%, Remaining: mb, ChunkLength: kb
+    Video Progress: - 0.00%, Remaining: 461.58mb, ChunkLength: 16.384kb
+
+    Audio Progress: - 0%%, Remaining: mb, ChunkLength: kb
+    Video Progress: - 0.01%, Remaining: 461.56mb, ChunkLength: 16.384kb
+
+    Audio Progress: - 0.11%, Remaining: 14.67mb, ChunkLength: 16.384kb
+    Video Progress: - 0.01%, Remaining: 461.55mb, ChunkLength: 16.384kb
+
+    ....
+
+    Once finished, the downloaded media file path and name will be:
+    /home/yongjie/media/favourite-cocktail.mp4
