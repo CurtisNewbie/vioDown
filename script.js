@@ -99,11 +99,10 @@ function download(url, filePath) {
 }
 
 /**
- * Download video part, once it's finished, it calls downloadAudio() method
+ * Download video part asynchronously
  */
 function downloadVideo(url, filePath) {
   let videoPath = filePath + VIDEO_INFIX;
-  // console.log("Downloading Video to", videoPath);
   ytdl(url, {
     quality: "highestvideo",
     filter: "videoonly"
@@ -118,11 +117,10 @@ function downloadVideo(url, filePath) {
 }
 
 /**
- *  Download audio part, once it's finished, it calls mergeVideoAndAudio()
+ *  Download audio part asynchronously
  */
 function downloadAudio(url, filePath) {
   let audioPath = filePath + AUDIO_INFIX;
-  // console.log("Downloading Audio to", audioPath);
   ytdl(url, {
     quality: "highestaudio",
     filter: "audioonly"
@@ -187,10 +185,10 @@ function deleteTempFiles(pathToVideo, pathToAudio) {
 /**
 -----------------------------------------------
 
-This program always downloads the media file of the highest quality. The video and audio  are 
-downloaded seperately. The general logic is that it starts with downloading video part, then 
-the audio part, and then merge them into a media file of mp4 format. The video part and audio part
-downloaded previously are deleted once they are merged.
+This program always downloads the media file of the highest quality. The video and audio are 
+downloaded seperately in parallel. The general logic is that it starts with downloading both 
+the video part and the audio part asynchronously, and then merge them into a media file of 
+mp4 format. The video part and audio part downloaded previously are deleted once they are merged.
 
 -----------------------------------------------
 */
