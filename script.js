@@ -11,6 +11,9 @@ const reader = readline.createInterface({
 const AUDIO_INFIX = "_audio";
 const VIDEO_INFIX = "_video";
 
+let start_time;
+let end_time;
+
 let audioProgress = {
   name: "Audio Progress:",
   percentage: "0.00",
@@ -162,6 +165,8 @@ function mergeVideoAndAudio(filePath) {
       console.log(
         `Done! Temporary audio and video files are successfully merged - ${filePath}`
       );
+      setEndTime();
+      displayTimeTook();
       deleteTempFiles(videoPath, audioPath);
     });
 }
@@ -180,6 +185,36 @@ function deleteTempFiles(pathToVideo, pathToAudio) {
   fileSys.unlink(pathToAudio, () => {
     console.log(`${pathToAudio} deleted.`);
   });
+}
+
+/**
+ * Record start_time
+ */
+function setStartTime() {
+  start_time = new Date().getTime();
+}
+
+/**
+ * Record end_time
+ */
+function setEndTime() {
+  end_time = new Date().getTime();
+}
+
+/**
+ * Display the time took
+ */
+function displayTimeTook() {
+  let units = ["seconds", "minutes", "hours"];
+  let timeTook = (end_time - start_time) / 1000;
+  let unit = units[0];
+  for (let i = 1; i < units.length; i++) {
+    if (timeTook < 60) break;
+
+    timeTook /= 60;
+    unit = units[i];
+  }
+  console.log("Took:", timeTook.toFixed(2), unit);
 }
 
 /**
@@ -204,6 +239,7 @@ function main() {
         "\n>>> Enter the absolute or relative path (including file name) to the downloaded file:\n",
         path => {
           filePath = path;
+          setStartTime();
           download(url, filePath);
           reader.close();
         }
